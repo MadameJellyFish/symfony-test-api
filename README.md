@@ -4,7 +4,7 @@ Ce guide décrit comment initialiser un nouveau projet Symfony dans un conteneur
 
 ## 1. Initialisation d'un nouveau projet Symfony
 
-### 1.1 Créer un Dockerfile d'initialisation (`Dockerfile.init`)
+### 1.1 Créer un Dockerfile d'initialisation `Dockerfile.init`
 
 Le `Dockerfile.init` est utilisé pour créer un conteneur temporaire qui initialise un projet Symfony.
 
@@ -169,5 +169,56 @@ docker-compose up -d
 
 - **-d** : pour "detached", ce qui permet de ne pas afficher les logs dans le terminal.
 
-  
+- **-d** : pour "detached", ce qui permet de ne pas afficher les logs dans le terminal.
+
+## 3. Setup avancé de Symfony
+Installez les packages nécessaires pour étendre les fonctionnalités de Symfony : (1 ligne à la fois)
+
+```bash
+docker-compose exec app composer require symfony/orm-pack
+
+docker-compose exec app composer require symfony/uid
+
+docker-compose exec app composer require symfony/security-bundle
+
+docker-compose exec app composer require symfony/maker-bundle --dev
+
+docker-compose exec app composer require lexik/jwt-authentication-bundle
+
+docker-compose exec app composer require api
+```
+
+### 3.1 Créer l'entité User et la table User dans la base de données
+```bash
+docker-compose exec app php bin/console make:user --with-uuid
+```
+
+```bash
+ajouter dans l'entité
+#[ApiResource] et l'importer
+```
+
+
+### 3.2 Générer une migration
+
+```bash
+docker-compose exec app php bin/console make:migration --formatted
+```
+
+### 3.3 Appliquer la migration
+```bash
+docker-compose exec app php bin/console doctrine:migrations:migrate
+```
+
+Vérifiez dans la base de données que la table `User` a bien été créée.
+
+### 3.4 Générer les clés JWT pour l'authentification
+```bash
+docker-compose exec app php bin/console lexik:jwt:generate-keypair
+```
+
+### 3.5 Créer un contrôleur UserController
+```bash
+docker-compose exec app php bin/console make:controller UserController
+```
 
