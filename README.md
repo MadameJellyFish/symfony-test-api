@@ -237,3 +237,22 @@ docker-compose exec app php bin/console lexik:jwt:generate-keypair
 docker-compose exec app php bin/console make:controller UserController
 ```
 
+### Optionnel
+Ajouter une autre entité 'Sport`
+```bash
+docker-compose exec app php bin/console make:entity Sport
+
+docker-compose exec app php bin/console make:migration --formatted
+
+docker-compose exec app php bin/console doctrine:migrations:migrate
+```
+
+### 4. Postgre
+#### 4.1 Se connecter à la base de données dans la terminal en vs
+```bash
+docker-compose exec db psql -U bads_club_user -d bads_club
+```
+#### 4.2 Listez les tables pour vérifier la présence de la nouvelle table
+```bash
+\dt
+```
