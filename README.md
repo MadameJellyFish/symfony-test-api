@@ -189,7 +189,7 @@ docker-compose exec app composer require api
 ```
 ### 3. Créer le serveur dans postgree
 ```bash
-Server, clicl droit, `Register`
+Server, clic droit, Register
 Utiliser les informations de .env
 - En connection
 --> Hostname/address: localhost
@@ -199,7 +199,7 @@ Utiliser les informations de .env
 --> Password : xxx
 
 - General
-name: docker
+--> name: docker
 ```
 
 ### 3.1 Créer l'entité User et la table User dans la base de données
