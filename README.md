@@ -239,6 +239,7 @@ docker-compose exec app php bin/console make:controller UserController
 
 ### Optionnel
 #### Ajouter une autre entité 'Sport`
+Ajouter le '#[ApiResource]' dans l'entité
 ```bash
 docker-compose exec app php bin/console make:entity Sport
 
