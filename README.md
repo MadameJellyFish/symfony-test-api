@@ -238,7 +238,7 @@ docker-compose exec app php bin/console make:controller UserController
 ```
 
 ### Optionnel
-Ajouter une autre entité 'Sport`
+#### Ajouter une autre entité 'Sport`
 ```bash
 docker-compose exec app php bin/console make:entity Sport
 
@@ -246,6 +246,8 @@ docker-compose exec app php bin/console make:migration --formatted
 
 docker-compose exec app php bin/console doctrine:migrations:migrate
 ```
+#### Ajouter le controller `SportController`
+docker-compose exec app php bin/console make:controller SportController
 
 ### 4. Postgre
 #### 4.1 Se connecter à la base de données dans la terminal en vs
