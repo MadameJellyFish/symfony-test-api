@@ -191,6 +191,7 @@ docker-compose exec app composer require api
 
 Server, clic droit, `Register`
 Utiliser les informations de `.env`
+```bash
 - En connection
 --> Hostname/address: localhost
 --> Port: 6442
@@ -200,15 +201,15 @@ Utiliser les informations de `.env`
 
 - General
 --> name: docker
-
+```
 
 ### 3.1 Créer l'entité User et la table User dans la base de données
 ```bash
 docker-compose exec app php bin/console make:user --with-uuid
 ```
 
-```bash
 ajouter dans l'entité
+```bash
 #[ApiResource] et l'importer
 ```
 
