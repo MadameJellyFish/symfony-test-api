@@ -187,6 +187,20 @@ docker-compose exec app composer require lexik/jwt-authentication-bundle
 
 docker-compose exec app composer require api
 ```
+### 3. Créer le serveur dans postgree
+```bash
+Server, clicl droit, `Register`
+Utiliser les informations de .env
+- En connection
+--> Hostname/address: localhost
+--> Port: 6442
+--> Maintenance database: bads_club
+--> username: bads_club_user
+--> Password : xxx
+
+- General
+name: docker
+```
 
 ### 3.1 Créer l'entité User et la table User dans la base de données
 ```bash
