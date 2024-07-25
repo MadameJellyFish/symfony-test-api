@@ -238,7 +238,7 @@ docker-compose exec app php bin/console make:controller UserController
 ```
 
 ### Optionnel
-#### Ajouter une autre entité 'Sport`
+#### Ajouter une autre entité `Sport`
 Ajouter le '#[ApiResource]' dans l'entité
 ```bash
 docker-compose exec app php bin/console make:entity Sport
@@ -258,4 +258,97 @@ docker-compose exec db psql -U bads_club_user -d bads_club
 #### 4.2 Listez les tables pour vérifier la présence de la nouvelle table
 ```bash
 \dt
+```
+# 5. Configuration Hoppscotch
+## 5.1 Editer le fichier `security.yaml`
+```bash
+security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                username_path: email
+                password_path: password
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern:   ^/api/
+            stateless: true
+            jwt: ~
+
+    access_control:
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        # main:
+        #   lazy: true
+        #   provider: app_user_provider
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    # access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+
+when@test:
+    security:
+        password_hashers:
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon
+```
+## 5.2 Editer fichier `lexik_jwt_authentication.yaml`
+```bash
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                username_path: email
+                password_path: password
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern:   ^/api/
+            stateless: true
+            jwt: ~
+
+    access_control:
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+```
+
+## 5.3 Ajouter dans le fichier `routes.yaml`
+```bash
+    api_login_check:
+        path: /api/login_check
 ```
